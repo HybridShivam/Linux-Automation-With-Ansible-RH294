@@ -1,0 +1,47 @@
+- hosts: web
+  tasks:
+    - name: Add Docker Yum Repository
+      yum_repository:
+        name: docker
+        description: Docker-CE YUM repo
+        baseurl: "https://download.docker.com/linux/centos/7/x86_64/stable/"
+        gpgcheck: no
+
+    - name: Installing Docker CE
+      package:
+        name: "docker-ce-18.06.3.ce-3.el7.x86_64"
+        state: present
+
+    - name: Start the Docker service
+      service:
+        name: "docker"
+        state: started
+
+    - name: Installing Python
+      package:
+        name: "python36"
+        state: present
+
+    - name: Installing the Docker Python SDK
+      pip:
+        name: docker
+
+    - name: Pull httpd Image from DockerHub
+      docker_image:
+        name: "httpd"
+        source: pull
+
+    - name: Create a sample html page "index.html"
+      copy:
+        content: "It Works! "
+        dest: "/home/index.html"
+
+    - name: Creating the container with httpd image
+      docker_container:
+        name: myHTTPContainer
+        image: httpd
+        state: started
+        ports:
+          - "8080:80"
+        volumes: 
+          - /home:/usr/local/apache2/htdocs/
