@@ -1,0 +1,36 @@
+---
+# tasks file for web_server
+
+- name: package installer for httpd
+  package:
+    name: "httpd"
+    state: "present"
+  register: httpd_package_status
+
+- name: Creating Document Root Directory
+  file:
+    state: directory
+    dest: "{{ documentroot_dir }}"
+  register: root_dir_name
+
+- name: Configuration file for apache web server 
+  template:
+    dest: "/etc/httpd/conf.d/hybrid.conf"
+    src: "templates/hybrid.conf.j2"
+  when: httpd_package_status.rc == 0
+  notify: httpd service
+
+- name: Copy web page from url
+  copy:
+    dest: "{{ documentroot_dir }}/index.html"
+    content: "This is a sample Page"
+  when: root_dir_name.failed == false
+
+- name: Start httpd service
+  service: 
+    name: httpd
+    state: started
+
+
+
+

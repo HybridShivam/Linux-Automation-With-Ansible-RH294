@@ -1,0 +1,19 @@
+---
+# tasks file for ec2_instance
+- name: Launch ec2 instance
+  ec2:
+    aws_access_key: "{{ access_key }}"
+    aws_secret_key: "{{ secret_key }}"
+    key_name: Hybrid_Key 
+    instance_type: t2.micro
+    image: ami-0ebc1ac48dfd14136
+    wait: yes
+    instance_tags:
+      name: web
+    group: MyWebServerGroup
+    count: 1
+    vpc_subnet_id: subnet-92704ffa
+    assign_public_ip: yes
+    region: ap-south-1
+
+

@@ -1,0 +1,10 @@
+Listen {{ newPort }}
+
+<Virtualhost {{ ansible_default_ipv4.address }}:{{ newPort }}>
+
+DocumentRoot {{ documentroot_dir }}
+
+
+</Virtualhost>
+
+

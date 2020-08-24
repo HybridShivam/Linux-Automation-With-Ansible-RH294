@@ -1,0 +1,8 @@
+---
+# handlers file for web_server
+- name: httpd service
+  service:
+    name: httpd
+    state: restarted
+
+

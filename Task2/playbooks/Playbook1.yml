@@ -1,0 +1,5 @@
+- hosts: localhost
+  roles:
+    - ec2_instance
+
+
